@@ -1,8 +1,15 @@
 const db = require('./connection');
 
 // Create
-function create() {
+async function create(name, species, birthdate, owner_id) {
+    const result = await db.result(`
+insert into pets
+    (name, species, birthdate, owner_id)
+values
+    ($1, $2, $3, $4)    
 
+    `, [name, species, birthdate, owner_id]);
+    return result;
 }
 
 // Retrieve
@@ -107,7 +114,7 @@ async function updateName(id, name) {
 
 async function updateBirthdate(id, dateObject) {
     // Postgres wants this: '2020-01-13'
-    const year = dateObject.getFullYear();    // YYYY
+    const year = dateObject.getFullYear();  // YYYY
     let month = dateObject.getMonth() + 1;  // MM
     if (month < 10) {
         month = `0${month}`;

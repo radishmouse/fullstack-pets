@@ -16,8 +16,11 @@ async function main() {
     // console.log(result);
     // const updateResult = await pets.updateName(1, 'the amazing oakley');
     // console.log(updateResult);
-    const updateResult = await pets.updateBirthdate(1, new Date());
-    console.log(updateResult);
+    // const updateResult = await pets.updateBirthdate(1, new Date());
+    // console.log(updateResult);
+
+    const createResult = await pets.create('billy', 'goat', '2020-01-13', 1);
+    console.log(createResult);
 }
 
 main();
