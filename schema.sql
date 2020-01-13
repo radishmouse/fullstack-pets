@@ -12,7 +12,7 @@ create table owners (
 -- what do we want to know about pets?
 create table pets (
     id serial primary key,
-    name text
+    name text,
     -- if you wanted to limit the number of characters
     -- use this kind of field:
     -- varchar(50)
