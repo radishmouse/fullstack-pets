@@ -68,21 +68,61 @@ async function all() {
 // }
 
 // Update
+// function updateName(id, name) {
+//     const resultPromise = db.result(`
+//         update pets set
+//             name=$1
+//         where id=$2;
+//     `, [name, id]);
+//     resultPromise.then(result => {
+//         if (result.rowCount === 1) {
+//             return id;
+//         } else {
+//             return null;
+//         }
+//     });
+//     return resultPromise;
+// }
+
 async function updateName(id, name) {
     const result = await db.result(`
         update pets set
             name=$1
         where id=$2;
-    `, [name, id]);
+    `, [name, id]);  
+    // return result;
+
+    // if we needed to do another
+    // db call, we would need to
+    // await it separately.
+    // const anotherResult = await db.any();
+
     if (result.rowCount === 1) {
         return id;
     } else {
         return null;
-    }    
+    }
 }
 
-async function updateBirthdate(id, birthdate) {
 
+async function updateBirthdate(id, dateObject) {
+    // Postgres wants this: '2020-01-13'
+    const year = dateObject.getFullYear();    // YYYY
+    let month = dateObject.getMonth() + 1;  // MM
+    if (month < 10) {
+        month = `0${month}`;
+    }
+    let day = dateObject.getDate();         // DD
+    if (day < 10) {
+        day = `0${day}`;
+    }
+    const dateString = `${year}-${month}-${day}`;
+    const result = await db.result(`
+        update pets set
+            birthdate=$1
+        where id=$2
+    `, [dateString, id]);
+    return result;
 }
 
 
@@ -102,7 +142,8 @@ module.exports = {
     create,
     one,
     all,
-    update,
+    updateName,
+    updateBirthdate,
     del
 }
 
