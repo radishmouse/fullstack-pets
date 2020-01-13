@@ -1,0 +1,20 @@
+{
+  "name": "fullstack-pets",
+  "version": "1.0.0",
+  "description": "## Set up an npm project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/radishmouse/fullstack-pets.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/radishmouse/fullstack-pets/issues"
+  },
+  "homepage": "https://github.com/radishmouse/fullstack-pets#readme"
+}
