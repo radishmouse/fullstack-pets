@@ -68,13 +68,33 @@ async function all() {
 // }
 
 // Update
-function update() {
+async function updateName(id, name) {
+    const result = await db.result(`
+        update pets set
+            name=$1
+        where id=$2;
+    `, [name, id]);
+    if (result.rowCount === 1) {
+        return id;
+    } else {
+        return null;
+    }    
+}
+
+async function updateBirthdate(id, birthdate) {
 
 }
 
-// Delete
-function del() {
 
+// Delete
+async function del(id) {
+    const result = await db.result(`delete from pets where id=$1`, [id]);
+    console.log(result);
+    if (result.rowCount === 1) {
+        return id;
+    } else {
+        return null;
+    }
 }
 
 
