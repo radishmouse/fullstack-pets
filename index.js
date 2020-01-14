@@ -90,10 +90,18 @@ app.get('/pets/:id(\\d+)', async (req, res) => {
     res.json(thePet);
 });
 
-// Hint: npm i body-parser
+function requireLogin(req, res, next) {
+    if (req.session && req.session.user) {
+        console.log('requireLogin says your are OK');
+        next();
+    } else {
+        console.log('💩💩💩💩💩💩💩💩💩💩Stranger Danger!!!!!💩💩💩💩💩💩💩💩💩💩');
+        res.redirect('/login');
+    }
+}
 
 // Create
-app.get('/pets/create', (req, res) => {
+app.get('/pets/create', requireLogin, (req, res) => {
     console.log('you want the form');
     // console.log('yes you are at /pets/create');
     // res.send('yes you are at /pets/create');
@@ -107,7 +115,7 @@ app.get('/pets/create', (req, res) => {
         }
     });
 });
-app.post('/pets/create', parseForm, async (req, res) => {
+app.post('/pets/create', requireLogin, parseForm, async (req, res) => {
     console.log(req.body.name);
     console.log(req.body.species);
     console.log(req.body.birthdate);
@@ -120,15 +128,15 @@ app.post('/pets/create', parseForm, async (req, res) => {
     // I could create a new pet!
     // and I'm going to hard code the owner id!
 
-    const owner_id_CHANGEME = 1;
-    const newPetId = await pets.create(name, species, birthdate, owner_id_CHANGEME);
+    const owner_id = req.session.user.id;
+    const newPetId = await pets.create(name, species, birthdate, owner_id);
     console.log(`The new pet id is ${newPetId}`);
 
     res.redirect(`/pets/${newPetId}`);
 });
 
 // Update
-app.get('/pets/:id/edit', async (req, res) => {
+app.get('/pets/:id/edit', requireLogin, async (req, res) => {
 
     const { id } = req.params;
     // const id = req.params.id;
@@ -143,7 +151,7 @@ app.get('/pets/:id/edit', async (req, res) => {
         }
     });
 });
-app.post('/pets/:id/edit', parseForm, async (req, res) => {
+app.post('/pets/:id/edit', requireLogin, parseForm, async (req, res) => {
     const { name, species, birthdate } = req.body;
     const { id } = req.params;
     const result = await pets.update(id, name, species, birthdate);
