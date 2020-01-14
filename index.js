@@ -168,15 +168,37 @@ app.post('/login', parseForm, async (req, res) => {
     const didLoginSuccessfully = await owners.login(name, password);
     if (didLoginSuccessfully) {
         console.log(`yay! you logged in!`);
+
+        // Assuming users have unique names:
+        const theUser = await owners.getByUsername(name);
+
         // Add some info to the user's session
         req.session.user = {
-            name
+            name,
+            id: theUser.id
         };
-        req.session.save();
+        req.session.save(() => {
+            console.log('The session is now saved!!!');
+            // This avoids a long-standing
+            // bug in the session middleware
+            res.redirect('/profile');
+        });
     } else {
         console.log(`boooooooo. that is not correct`);
     }
 });
+
+app.get('/logout', (req, res) => {
+    // Get rid of the user's session!
+    // Then redirect them to the login page.
+    req.session.destroy(() => {
+        console.log('The session is now destroyed!!!');
+        // This avoids a long-standing
+        // bug in the session middleware
+        res.redirect('/login');
+    });
+    
+})
 
 // "Profile" - list pets for this owner
 app.get('/profile', (req, res) => {
