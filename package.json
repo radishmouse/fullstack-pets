@@ -4,7 +4,7 @@
   "description": "## Set up an npm project",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "nodemon --ignore './sessions/' index.js",
     "db:delete": "dropdb fullstack-pets",
     "db:create": "createdb fullstack-pets",
     "db:schema": "psql -f schema.sql fullstack-pets",

@@ -168,13 +168,20 @@ app.post('/login', parseForm, async (req, res) => {
     const didLoginSuccessfully = await owners.login(name, password);
     if (didLoginSuccessfully) {
         console.log(`yay! you logged in!`);
+        // Add some info to the user's session
+        req.session.user = {
+            name
+        };
+        req.session.save();
     } else {
         console.log(`boooooooo. that is not correct`);
     }
 });
 
 // "Profile" - list pets for this owner
-app.get('/profile');
+app.get('/profile', (req, res) => {
+    res.send(`Welcome back ${req.session.user.name}`)
+});
 
 server.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
