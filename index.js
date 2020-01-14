@@ -4,6 +4,40 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
+// This is the session management middleware
+// created by the Express.js team
+const session = require('express-session');
+
+// Give us a modified version of the Express team's
+// session management software.
+// We want one that can save session info a file
+// on the hard drive.
+const FileStore = require('session-file-store')(session);
+app.use(session({
+    store: new FileStore({}),
+
+    // We will move this to a secure location, shortly.
+    secret: 'lalala1234lalala'
+}));
+
+// When we app.use(session), the session middleware
+// adds the variable `req.session` 
+
+// As the user browses from page to page, their
+// browser shows us a "cookie"
+// and the session middleware attaches that user's 
+// session info to the request.
+
+
+// Let's see what's in the session!!!!
+app.use((req, res, next) =>  {
+    console.log('***********');
+    console.log(req.session);
+    console.log('***********');
+
+    next();
+});
+
 const es6Renderer = require('express-es6-template-engine');
 app.engine('html', es6Renderer);
 app.set('views', 'templates');
