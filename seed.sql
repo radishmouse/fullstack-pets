@@ -1,8 +1,8 @@
 insert into owners 
-    (name, phone_number)
+    (name, phone_number, hash)
 values
-    ('chris', '8675309'),
-    ('aylor', '5554321');
+    ('chris', '8675309', '$2a$10$nMO33hS/2hhh.Rxc9sn9bOv4bDTaC16TUvVRlTGZLHbahX1CW.W7O'),
+    ('aylor', '5554321', '$2a$10$uDUtiJjdIcRw4Ctk034WguoIQIkFH2GRA5F4./cVG/UYJP.iG3f4C');
 
 
 insert into pets
