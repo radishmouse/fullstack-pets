@@ -123,6 +123,17 @@ app.post('/pets/:id/edit', parseForm, async (req, res) => {
 app.get('/pets/:id/delete')
 app.post('/pets/:id/delete')
 
+// Login!
+app.get('/login', (req, res) => {
+    res.render('owners/auth');
+});
+app.post('/login', parseForm, (req, res) => {
+    console.log(req.body);
+});
+
+// "Profile" - list pets for this owner
+app.get('/profile');
+
 server.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
 });
