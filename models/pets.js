@@ -113,6 +113,27 @@ async function updateName(id, name) {
     }
 }
 
+async function updateSpecies(id, species) {
+    const result = await db.result(`
+        update pets set
+            species=$1
+        where id=$2;
+    `, [species, id]);  
+    // return result;
+
+    // if we needed to do another
+    // db call, we would need to
+    // await it separately.
+    // const anotherResult = await db.any();
+
+    if (result.rowCount === 1) {
+        return id;
+    } else {
+        return null;
+    }
+}
+
+
 
 async function updateBirthdate(id, dateObject) {
     // Postgres wants this: '2020-01-13'
@@ -123,6 +144,29 @@ async function updateBirthdate(id, dateObject) {
         where id=$2
     `, [dateString, id]);
     return result;
+}
+
+
+async function update(id, name, species, birthdate) {
+    const result = await db.result(`
+        update pets set
+            name=$2,
+            species=$3,
+            birthdate=$4
+        where id=$1;
+    `, [id, name, species, birthdate]);  
+    // return result;
+
+    // if we needed to do another
+    // db call, we would need to
+    // await it separately.
+    // const anotherResult = await db.any();
+
+    if (result.rowCount === 1) {
+        return id;
+    } else {
+        return null;
+    }
 }
 
 
@@ -142,8 +186,10 @@ module.exports = {
     create,
     one,
     all,
+    update,
     updateName,
     updateBirthdate,
+    updateSpecies,
     del
 }
 

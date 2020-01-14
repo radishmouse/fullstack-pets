@@ -78,6 +78,10 @@ app.post('/pets/create', parseForm, async (req, res) => {
     console.log(req.body.birthdate);
 
     const { name, species, birthdate } = req.body;
+    // const name = req.body.name;
+    // const species = req.body.species;
+    // const birthdate = req.body.birthdate;
+
     // I could create a new pet!
     // and I'm going to hard code the owner id!
 
@@ -92,6 +96,8 @@ app.post('/pets/create', parseForm, async (req, res) => {
 app.get('/pets/:id/edit', async (req, res) => {
 
     const { id } = req.params;
+    // const id = req.params.id;
+
     const thePet = await pets.one(id);
 
     res.render('pets/form', {
@@ -102,7 +108,16 @@ app.get('/pets/:id/edit', async (req, res) => {
         }
     });
 });
-app.post('/pets/:id/edit')
+app.post('/pets/:id/edit', parseForm, async (req, res) => {
+    const { name, species, birthdate } = req.body;
+    const { id } = req.params;
+    const result = await pets.update(id, name, species, birthdate);
+    if (result) {
+        res.redirect(`/pets/${id}`);
+    } else {
+        res.redirect(`/pets/${id}/edit`)
+    }
+});
 
 // Delete
 app.get('/pets/:id/delete')
