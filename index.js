@@ -30,6 +30,7 @@ const { dateToFormattedString } = require('./utils');
 const server = http.createServer(app);
 
 const pets = require('./models/pets');
+const owners = require('./models/owners');
 
 
 // See all pets!
@@ -127,8 +128,15 @@ app.post('/pets/:id/delete')
 app.get('/login', (req, res) => {
     res.render('owners/auth');
 });
-app.post('/login', parseForm, (req, res) => {
+app.post('/login', parseForm, async (req, res) => {
     console.log(req.body);
+    const { name, password } = req.body;
+    const didLoginSuccessfully = await owners.login(name, password);
+    if (didLoginSuccessfully) {
+        console.log(`yay! you logged in!`);
+    } else {
+        console.log(`boooooooo. that is not correct`);
+    }
 });
 
 // "Profile" - list pets for this owner
