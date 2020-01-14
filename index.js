@@ -14,6 +14,9 @@ const parseForm = bodyParser.urlencoded({
     extended: true
 });
 
+const { dateToFormattedString } = require('./utils');
+
+
 // Use this if you're building an API
 // that accepts JSON data from the client.
 // const parseJson = bodyParser.json();
@@ -61,7 +64,13 @@ app.get('/pets/create', (req, res) => {
     // res.send('yes you are at /pets/create');
 
     // express will look in templates/pets/form.html
-    res.render('pets/form');
+    res.render('pets/form', {
+        locals: {
+            name: '',
+            species: '',
+            birthdate: ''
+        }
+    });
 });
 app.post('/pets/create', parseForm, async (req, res) => {
     console.log(req.body.name);
@@ -80,7 +89,19 @@ app.post('/pets/create', parseForm, async (req, res) => {
 });
 
 // Update
-app.get('/pets/:id/edit')
+app.get('/pets/:id/edit', async (req, res) => {
+
+    const { id } = req.params;
+    const thePet = await pets.one(id);
+
+    res.render('pets/form', {
+        locals: {
+            name: thePet.name,
+            species: thePet.species,
+            birthdate: dateToFormattedString(thePet.birthdate)
+        }
+    });
+});
 app.post('/pets/:id/edit')
 
 // Delete
