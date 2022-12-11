@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/radishmouse/fullstack-pets#readme",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "pg-promise": "^10.3.5"
   }
 }
